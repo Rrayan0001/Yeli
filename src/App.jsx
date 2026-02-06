@@ -37,7 +37,6 @@ export default function App() {
 
   return (
     <div className={`page ${introDone ? 'intro-done' : 'intro-active'}`}>
-
       {/* INTRO OVERLAY */}
       <div className="intro-overlay">
         <div className="intro-triangle-wrapper">
