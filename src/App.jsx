@@ -1,19 +1,106 @@
-
 import { useCallback, useEffect, useState } from 'react'
 import IntroAnimation from './components/IntroAnimation'
-import ServiceSection from './components/ServiceSection'
+import HomePage from './pages/HomePage'
+import AboutPage from './pages/AboutPage'
+import ProjectsPage from './pages/ProjectsPage'
+import ContactPage from './pages/ContactPage'
+
+const navLinks = [
+  { path: '/about', label: 'About' },
+  { path: '/projects', label: 'Projects' },
+  { path: '/contact', label: 'Contact' },
+]
+
+const supportedPaths = new Set(['/', '/about', '/projects', '/contact'])
+
+function normalizePath(pathname) {
+  if (!pathname || pathname === '/') {
+    return '/'
+  }
+
+  const trimmed = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname
+  return trimmed || '/'
+}
+
+function resolvePath(pathname) {
+  const normalizedPath = normalizePath(pathname)
+  return supportedPaths.has(normalizedPath) ? normalizedPath : '/'
+}
 
 export default function App() {
-  const [introDone, setIntroDone] = useState(false)
+  const [currentPath, setCurrentPath] = useState(() => resolvePath(window.location.pathname))
+  const [introDone, setIntroDone] = useState(() => resolvePath(window.location.pathname) !== '/')
+  const [navOpen, setNavOpen] = useState(false)
+
+  const isHomePage = currentPath === '/'
+  const introActive = isHomePage && !introDone
+
   const handleIntroComplete = useCallback(() => {
     setIntroDone(true)
   }, [])
 
-  useEffect(() => {
-    document.body.style.overflow = introDone ? '' : 'hidden'
-  }, [introDone])
+  const handleNavToggle = useCallback(() => {
+    setNavOpen(previousState => !previousState)
+  }, [])
 
-  // Reveal animation on scroll
+  const handleNavClose = useCallback(() => {
+    setNavOpen(false)
+  }, [])
+
+  const handleNavigate = useCallback((event, path) => {
+    if (event) {
+      if (event.button !== 0 || event.metaKey || event.altKey || event.ctrlKey || event.shiftKey) {
+        return
+      }
+      event.preventDefault()
+    }
+
+    const nextPath = resolvePath(path)
+    if (nextPath !== currentPath) {
+      window.history.pushState({}, '', nextPath)
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+      setCurrentPath(nextPath)
+    }
+
+    setNavOpen(false)
+  }, [currentPath])
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const nextPath = resolvePath(window.location.pathname)
+      setCurrentPath(nextPath)
+      setNavOpen(false)
+    }
+
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [])
+
+  useEffect(() => {
+    if (!isHomePage) {
+      setIntroDone(true)
+    }
+  }, [isHomePage])
+
+  useEffect(() => {
+    document.body.style.overflow = introActive || navOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [introActive, navOpen])
+
+  useEffect(() => {
+    const handleEscape = event => {
+      if (event.key === 'Escape') {
+        setNavOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [])
+
+  // Reveal animation on scroll for active page content.
   useEffect(() => {
     const elements = document.querySelectorAll('.reveal')
     const observer = new IntersectionObserver(
@@ -29,121 +116,76 @@ export default function App() {
 
     elements.forEach(el => observer.observe(el))
     return () => observer.disconnect()
-  }, [])
+  }, [currentPath, introDone])
+
+  const renderPage = () => {
+    if (currentPath === '/about') {
+      return <AboutPage />
+    }
+
+    if (currentPath === '/projects') {
+      return <ProjectsPage />
+    }
+
+    if (currentPath === '/contact') {
+      return <ContactPage />
+    }
+
+    return <HomePage />
+  }
 
   return (
     <div className={`page ${introDone ? 'intro-done' : 'intro-active'}`}>
-      {/* INTRO OVERLAY */}
-      {!introDone && <IntroAnimation onComplete={handleIntroComplete} />}
+      {introActive && <IntroAnimation onComplete={handleIntroComplete} />}
+
+      <button
+        type="button"
+        className={`nav-backdrop ${navOpen ? 'is-open' : ''}`}
+        aria-label="Close navigation menu"
+        onClick={handleNavClose}
+      />
 
       <header className="site-header reveal">
-        <div className="nav-pill">
-          <div className="nav-logo">
-            <img src="/yeli-logo.png" alt="Yeli" />
+        <div className={`nav-shell ${navOpen ? 'is-open' : ''}`}>
+          <div className="nav-pill">
+            <a href="/" className="nav-logo" onClick={event => handleNavigate(event, '/')} aria-label="Go to home page">
+              <img src="/triangle_v2.png" alt="Yeli" />
+            </a>
+
+            <div className="nav-title">
+              YELI ARCHITECTURE STUDIO
+            </div>
+
+            <button
+              type="button"
+              className={`nav-menu ${navOpen ? 'is-open' : ''}`}
+              aria-expanded={navOpen}
+              aria-controls="site-navigation"
+              aria-label="Toggle navigation menu"
+              onClick={handleNavToggle}
+            >
+              <span></span>
+              <span></span>
+            </button>
           </div>
-          <div className="nav-title">
-            YELI ARCHITECTURE STUDIO
-          </div>
-          <div className="nav-menu">
-            <span></span>
-            <span></span>
-          </div>
+
+          <nav id="site-navigation" className={`nav-dropdown ${navOpen ? 'is-open' : ''}`} aria-label="Site">
+            {navLinks.map(link => (
+              <a
+                key={link.path}
+                href={link.path}
+                className="nav-link"
+                aria-current={currentPath === link.path ? 'page' : undefined}
+                onClick={event => handleNavigate(event, link.path)}
+              >
+                <span>{link.label}</span>
+              </a>
+            ))}
+          </nav>
         </div>
       </header>
 
-      <main>
-        {/* HERO / LANDING */}
-        <section className="landing-section reveal">
-          <div className="landing-content">
-            <p className="landing-eyebrow">Est. 2026 • Bengaluru</p>
-            <h1 className="landing-title">
-              Building Dreams,<br />
-              <span className="gold-text">Rooted in Heritage.</span>
-            </h1>
-            <p className="landing-subtitle">
-              We don't just sketch structures; we blueprint aspirations.
-            </p>
-            <div className="scroll-indicator">
-              <span>Explore Services</span>
-              <div className="line"></div>
-            </div>
-          </div>
-        </section>
-
-        {/* SERVICES FLOW */}
-        <div className="services-container" id="services">
-
-          <ServiceSection
-            title="Thotti Mane Heritage"
-            subtitle="Restoration & Design"
-            description="Reviving the soul of traditional courtyards with modern sensibilities. We blend the timeless rustle of rain-kissed trees with contemporary comfort."
-            image="/villa-courtyard.png"
-            align="left"
-          />
-
-          <ServiceSection
-            title="Smart Workspaces"
-            subtitle="Commercial"
-            description="High-tech environments designed for focus and collaboration. Where glass and steel meet warm, ambient innovation."
-            image="/smart-office.png"
-            align="right"
-          />
-
-          <ServiceSection
-            title="Luxury Villas"
-            subtitle="Residential"
-            description="Custom homes that reflect your journey. From Whitefield estates to quiet retreats, we craft sanctuaries of stone and light."
-            image="/heritage-detail.png"
-            align="left"
-          />
-
-          <ServiceSection
-            title="Landscape Integration"
-            subtitle="Exterior Design"
-            description="Blurring the lines between indoors and outdoors. Our designs breathe, incorporating nature as a core structural element."
-            image="/villa-courtyard.png"
-            align="right"
-          />
-
-          <ServiceSection
-            title="Urban Planning"
-            subtitle="Community"
-            description="Designing sustainable communities that foster connection. Thoughtful spaces for the future of Bengaluru."
-            image="/smart-office.png"
-            align="left"
-          />
-
-        </div>
-
-        {/* ABOUT & CONTACT */}
-        <section className="about-contact-section" id="contact">
-          <div className="about-content reveal">
-            <h2>Our Philosophy</h2>
-            <p>
-              "Transcending Limitations" is not just a tagline; it is our ethos.
-              We believe a home should be as modern as your future and as comforting as your past.
-            </p>
-          </div>
-
-
-          <p className="founders-paragraph">
-            Yeli Architecture Studio is <span className="highlight">Uttam Prakash</span>, <span className="highlight">Sriranga R Tilak</span>, <span className="highlight">Sudesh Ambig</span>, and <span className="highlight">Sampath Kumar</span>.
-          </p>
-
-          <footer className="footer reveal">
-            <div className="contact-details">
-              <h3>Get in Touch</h3>
-              <p>hello@yeli.studio</p>
-              <p>+91 98765 43210</p>
-              <p>Indiranagar, Bengaluru, KA</p>
-            </div>
-            <div className="footer-bottom">
-              <p>&copy; 2026 Yeli Architecture Studio. All Rights Reserved.</p>
-            </div>
-          </footer>
-        </section>
-
-      </main>
+      {renderPage()}
     </div>
   )
 }

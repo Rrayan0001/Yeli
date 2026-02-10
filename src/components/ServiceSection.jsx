@@ -24,8 +24,8 @@ export default function ServiceSection({ title, subtitle, description, image, al
   }, [])
 
   return (
-    <section 
-      ref={sectionRef} 
+    <section
+      ref={sectionRef}
       className={`service-section service-${align} reveal`}
       style={{ backgroundImage: `url(${image})` }}
     >
