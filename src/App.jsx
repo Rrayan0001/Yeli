@@ -1,17 +1,12 @@
 
-import { useEffect, useState, useRef } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import IntroAnimation from './components/IntroAnimation'
 import ServiceSection from './components/ServiceSection'
 
 export default function App() {
   const [introDone, setIntroDone] = useState(false)
-
-  useEffect(() => {
-    // Intro animation timer
-    const timer = setTimeout(() => {
-      setIntroDone(true)
-    }, 3000)
-    return () => clearTimeout(timer)
+  const handleIntroComplete = useCallback(() => {
+    setIntroDone(true)
   }, [])
 
   useEffect(() => {
@@ -39,7 +34,7 @@ export default function App() {
   return (
     <div className={`page ${introDone ? 'intro-done' : 'intro-active'}`}>
       {/* INTRO OVERLAY */}
-      <IntroAnimation onComplete={() => setIntroDone(true)} />
+      {!introDone && <IntroAnimation onComplete={handleIntroComplete} />}
 
       <header className="site-header reveal">
         <div className="nav-pill">

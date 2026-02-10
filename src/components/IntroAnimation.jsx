@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react'
 
-// Welcome intro derived from the provided Figma frame (golden triangle with label)
-// Plays once for 3s, fades out, then unmounts and signals completion.
+const LOGO_PHASE_MS = 2300
+const CURTAIN_PHASE_MS = 1100
+
+// Welcome intro with a stepped 4-panel curtain lift reveal.
 export default function IntroAnimation({ onComplete }) {
-  const [visible, setVisible] = useState(true)
-  const [fading, setFading] = useState(false)
+  const [phase, setPhase] = useState('logo') // logo | reveal | done
 
   useEffect(() => {
-    const fadeTimer = setTimeout(() => setFading(true), 2400) // start fade near the end
-    const endTimer = setTimeout(() => {
-      setVisible(false)
+    const revealTimer = setTimeout(() => setPhase('reveal'), LOGO_PHASE_MS)
+    const finishTimer = setTimeout(() => {
+      setPhase('done')
       onComplete?.()
-    }, 3000)
+    }, LOGO_PHASE_MS + CURTAIN_PHASE_MS)
 
     return () => {
-      clearTimeout(fadeTimer)
-      clearTimeout(endTimer)
+      clearTimeout(revealTimer)
+      clearTimeout(finishTimer)
     }
   }, [onComplete])
 
-  if (!visible) return null
+  if (phase === 'done') return null
 
   return (
     <>
@@ -29,21 +30,26 @@ export default function IntroAnimation({ onComplete }) {
           inset: 0;
           background: #000;
           z-index: 9999;
+          overflow: hidden;
+          transition: background-color 0.12s linear;
+        }
+        .intro-overlay.reveal-phase {
+          background: transparent;
+        }
+
+        .intro-logo-stage {
+          position: relative;
+          z-index: 3;
+          width: 100%;
+          height: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          transition: opacity 0.8s ease;
-        }
-        .intro-overlay::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(circle at center, rgba(40,40,40,0.35) 0%, rgba(0,0,0,0.95) 45%, #000 100%);
-          pointer-events: none;
-        }
-        .intro-overlay.fade-out {
           opacity: 0;
-          pointer-events: none;
+          transition: opacity 0.3s ease;
+        }
+        .intro-logo-stage.is-active {
+          opacity: 1;
         }
         .intro-logo-wrap {
           position: relative;
@@ -92,16 +98,59 @@ export default function IntroAnimation({ onComplete }) {
           70% { opacity: 1; transform: scale(1.05); }
           100% { opacity: 0.9; transform: scale(1); }
         }
+
+        .curtain-grid {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+        .curtain-panel {
+          position: relative;
+          height: 100%;
+          background: linear-gradient(180deg, #010101 0%, #070707 100%);
+          border: 1px solid transparent;
+          transform: translateY(0);
+        }
+        .curtain-open .curtain-panel {
+          border-color: rgba(212, 175, 55, 0.85);
+        }
+        .curtain-open .panel-1 {
+          animation: liftPanel 0.92s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.18s;
+        }
+        .curtain-open .panel-2 {
+          animation: liftPanel 0.78s cubic-bezier(0.22, 1, 0.36, 1) forwards 0s;
+        }
+        .curtain-open .panel-3 {
+          animation: liftPanel 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.06s;
+        }
+        .curtain-open .panel-4 {
+          animation: liftPanel 0.88s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.22s;
+        }
+        @keyframes liftPanel {
+          from { transform: translateY(0); }
+          to { transform: translateY(-115vh); }
+        }
       `}</style>
 
-      <div className={`intro-overlay ${fading ? 'fade-out' : ''}`}>
-        <div className="intro-logo-wrap">
-          <img
-            src="/welcome-logo.png"
-            alt="Yeli Architecture Studio"
-            className="intro-logo"
-            loading="eager"
-          />
+      <div className={`intro-overlay ${phase === 'reveal' ? 'reveal-phase' : ''}`}>
+        <div className={`intro-logo-stage ${phase === 'logo' ? 'is-active' : ''}`}>
+          <div className="intro-logo-wrap">
+            <img
+              src="/welcome-logo.png"
+              alt="Yeli Architecture Studio"
+              className="intro-logo"
+              loading="eager"
+            />
+          </div>
+        </div>
+
+        <div className={`curtain-grid ${phase === 'reveal' ? 'curtain-open' : ''}`} aria-hidden="true">
+          <div className="curtain-panel panel-1" />
+          <div className="curtain-panel panel-2" />
+          <div className="curtain-panel panel-3" />
+          <div className="curtain-panel panel-4" />
         </div>
       </div>
     </>
