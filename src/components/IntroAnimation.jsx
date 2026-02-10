@@ -1,33 +1,30 @@
 import { useEffect, useState } from 'react'
 
+// Welcome intro derived from the provided Figma frame (golden triangle with label)
+// Plays once for 3s, fades out, then unmounts and signals completion.
 export default function IntroAnimation({ onComplete }) {
-  const [isVisible, setIsVisible] = useState(true)
+  const [visible, setVisible] = useState(true)
+  const [fading, setFading] = useState(false)
 
   useEffect(() => {
-    // Timeline:
-    // 0s: Triangle appears
-    // 0.5s -> 0.4s: Triangle splits (opens gap)
-    // 1.0s -> 0.8s: Yeli moves up/scales up from the gap
-    // 1.5s -> 1.2s: Architecture fades in
-    // 2.0s -> 1.5s: Studio fades in
-    // 3.0s: End (Fade out overlay)
+    const fadeTimer = setTimeout(() => setFading(true), 2400) // start fade near the end
+    const endTimer = setTimeout(() => {
+      setVisible(false)
+      onComplete?.()
+    }, 3000)
 
-    const totalDuration = 3000
-
-    const timer = setTimeout(() => {
-      setIsVisible(false)
-      if (onComplete) onComplete()
-    }, totalDuration)
-
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(fadeTimer)
+      clearTimeout(endTimer)
+    }
   }, [onComplete])
 
-  if (!isVisible) return null
+  if (!visible) return null
 
   return (
     <>
       <style>{`
-        .custom-intro-overlay {
+        .intro-overlay {
           position: fixed;
           inset: 0;
           background: #000;
@@ -37,130 +34,74 @@ export default function IntroAnimation({ onComplete }) {
           justify-content: center;
           transition: opacity 0.8s ease;
         }
-        .custom-intro-overlay.fade-out {
+        .intro-overlay::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(circle at center, rgba(40,40,40,0.35) 0%, rgba(0,0,0,0.95) 45%, #000 100%);
+          pointer-events: none;
+        }
+        .intro-overlay.fade-out {
           opacity: 0;
           pointer-events: none;
         }
-        .intro-container {
+        .intro-logo-wrap {
           position: relative;
-          width: 1920px;
-          height: 1080px;
-          max-width: 100vw;
-          max-height: 100vh;
+          width: min(72vw, 520px);
+          aspect-ratio: 1 / 1;
           display: flex;
           align-items: center;
           justify-content: center;
+          animation: logoPop 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
-        .triangle-container {
+        .intro-logo-wrap::after {
+          content: '';
           position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 300px;
-          height: 300px;
-          display: flex;
-          justify-content: center;
+          inset: 8%;
+          border-radius: 24px;
+          filter: blur(24px);
+          background: radial-gradient(circle, rgba(255,204,102,0.25), rgba(212,175,55,0));
+          z-index: 0;
+          opacity: 0;
+          animation: glowRise 1.8s ease-out forwards 0.2s;
         }
-        .triangle-half {
-          position: absolute;
-          top: 0;
+        .intro-logo {
+          position: relative;
+          z-index: 1;
           width: 100%;
           height: 100%;
-          display: flex;
-          justify-content: center;
-          overflow: hidden;
-        }
-        .triangle-half img {
-          width: 100%;
-          height: auto;
-          display: block;
-        }
-        .triangle-half.left {
-          clip-path: inset(0 50% 0 0);
-          animation: splitLeft 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.4s;
-        }
-        .triangle-half.right {
-          clip-path: inset(0 0 0 50%);
-          animation: splitRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards 0.4s;
-        }
-        .layer-yeli-v2 {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 10;
-        }
-        .layer-yeli-v2 img {
+          object-fit: contain;
+          filter: drop-shadow(0 14px 26px rgba(0,0,0,0.55));
           opacity: 0;
-          width: 200px;
-          animation: enterYeliV2 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards 0.8s;
+          transform: scale(0.94);
+          animation: logoFade 1.6s ease-out forwards 0.15s;
         }
-        .layer-architecture-v2 {
-          position: absolute;
-          top: 65%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+        @keyframes logoPop {
+          0% { transform: scale(0.82); opacity: 0; }
+          30% { transform: scale(1.04); opacity: 1; }
+          65% { transform: scale(0.98); }
+          100% { transform: scale(1); }
         }
-        .layer-architecture-v2 img {
-          opacity: 0;
-          width: 300px;
-          animation: fadeInMoveUp 0.6s ease forwards 1.2s;
+        @keyframes logoFade {
+          0% { opacity: 0; transform: scale(0.94); filter: blur(6px); }
+          60% { opacity: 1; transform: scale(1.01); filter: blur(1px); }
+          100% { opacity: 1; transform: scale(1); filter: blur(0); }
         }
-        .layer-studio-v2 {
-          position: absolute;
-          top: 75%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-        }
-        .layer-studio-v2 img {
-          opacity: 0;
-          width: 200px;
-          animation: fadeInMoveUp 0.6s ease forwards 1.5s;
-        }
-        @keyframes splitLeft {
-          to { transform: translateX(-160px); }
-        }
-        @keyframes splitRight {
-          to { transform: translateX(160px); }
-        }
-        @keyframes enterYeliV2 {
-          from { opacity: 0; transform: scale(0.5) translateY(50px); }
-          to { opacity: 1; transform: scale(1.3) translateY(0); }
-        }
-        @keyframes fadeInMoveUp {
-          from { opacity: 0; transform: translateY(30px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes glowRise {
+          0% { opacity: 0; transform: scale(0.9); }
+          70% { opacity: 1; transform: scale(1.05); }
+          100% { opacity: 0.9; transform: scale(1); }
         }
       `}</style>
-      <div className={`custom-intro-overlay ${!isVisible ? 'fade-out' : ''}`}>
-        <div className="intro-container">
 
-          {/* Triangle Split Container */}
-          <div className="triangle-container">
-            {/* Left Half - Clips the left side of the image */}
-            <div className="triangle-half left">
-              <img src="/triangle_v2.png" alt="" />
-            </div>
-            {/* Right Half - Clips the right side of the image */}
-            <div className="triangle-half right">
-              <img src="/triangle_v2.png" alt="" />
-            </div>
-          </div>
-
-          {/* Yeli Text (Enters from gap) */}
-          <div className="intro-layer layer-yeli-v2">
-            <img src="/yeli_text_v2.png" alt="Yeli" />
-          </div>
-
-          {/* Architecture (Fades in) */}
-          <div className="intro-layer layer-architecture-v2">
-            <img src="/architecture_v2.png" alt="Architecture" />
-          </div>
-
-          {/* Studio (Fades in) */}
-          <div className="intro-layer layer-studio-v2">
-            <img src="/studio_v2.png" alt="Studio" />
-          </div>
+      <div className={`intro-overlay ${fading ? 'fade-out' : ''}`}>
+        <div className="intro-logo-wrap">
+          <img
+            src="/welcome-logo.png"
+            alt="Yeli Architecture Studio"
+            className="intro-logo"
+            loading="eager"
+          />
         </div>
       </div>
     </>

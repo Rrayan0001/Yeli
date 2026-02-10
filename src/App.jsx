@@ -10,7 +10,7 @@ export default function App() {
     // Intro animation timer
     const timer = setTimeout(() => {
       setIntroDone(true)
-    }, 4000)
+    }, 3000)
     return () => clearTimeout(timer)
   }, [])
 
