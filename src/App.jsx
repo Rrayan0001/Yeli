@@ -1,5 +1,6 @@
 
 import { useEffect, useState, useRef } from 'react'
+import IntroAnimation from './components/IntroAnimation'
 import ServiceSection from './components/ServiceSection'
 
 export default function App() {
@@ -38,15 +39,7 @@ export default function App() {
   return (
     <div className={`page ${introDone ? 'intro-done' : 'intro-active'}`}>
       {/* INTRO OVERLAY */}
-      <div className="intro-overlay">
-        <div className="intro-triangle-wrapper">
-          <svg className="intro-triangle" viewBox="0 0 100 100">
-            <polygon points="50,15 90,85 10,85" />
-          </svg>
-        </div>
-        <h1 className="intro-name">Yeli Architecture Studio</h1>
-        <p className="intro-tagline">"Transcending Limitations"</p>
-      </div>
+      <IntroAnimation onComplete={() => setIntroDone(true)} />
 
       <header className="site-header reveal">
         <div className="nav-pill">
@@ -137,24 +130,10 @@ export default function App() {
             </p>
           </div>
 
-          <div className="founders-grid reveal">
-            <div className="founder-card">
-              <h3>Uttam Prakash</h3>
-              <span>Principal Architect</span>
-            </div>
-            <div className="founder-card">
-              <h3>Sudesh Ambig</h3>
-              <span>Design Lead</span>
-            </div>
-            <div className="founder-card">
-              <h3>Sampath Kumar</h3>
-              <span>Structural Engineer</span>
-            </div>
-            <div className="founder-card">
-              <h3>Supreeth Srinivas</h3>
-              <span>Project Manager</span>
-            </div>
-          </div>
+
+          <p className="founders-paragraph">
+            Yeli Architecture Studio is <span className="highlight">Uttam Prakash</span>, <span className="highlight">Sriranga R Tilak</span>, <span className="highlight">Sudesh Ambig</span>, and <span className="highlight">Sampath Kumar</span>.
+          </p>
 
           <footer className="footer reveal">
             <div className="contact-details">
