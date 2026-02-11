@@ -14,10 +14,10 @@ export default function HomePage() {
             We don't just sketch structures; <br />
             we blueprint aspirations.
           </p>
-          <div className="scroll-indicator">
-            <span>Explore Services</span>
-            <div className="line"></div>
-          </div>
+        </div>
+        <div className="scroll-indicator">
+          <span>Explore Services</span>
+          <div className="line"></div>
         </div>
       </section>
 
@@ -73,7 +73,7 @@ export default function HomePage() {
         </div>
 
         <p className="founders-paragraph">
-          Yeli Architecture Studio is founded by <span className="highlight">Uttam Prakash</span>, <span className="highlight">Sriranga R Tilak</span>, <span className="highlight">Sudesh Ambig</span>, <span className="highlight">Sampath Kumar</span>, and <span className="highlight">SUPREETH SRINIVAS</span>.
+          Yeli Architecture Studio is founded by <span className="highlight">Uttam Prakash</span>, <span className="highlight">Sriranga R Tilak</span>, <span className="highlight">Sudesh Ambig</span>, <span className="highlight">Sampath Kumar</span>, <span className="highlight">Vinod Garag</span>, and <span className="highlight">SUPREETH SRINIVAS</span>.
         </p>
 
         <footer className="footer reveal">
@@ -83,7 +83,7 @@ export default function HomePage() {
               <a className="contact-email-link" href="mailto:yeliarchitects12@gmail.com">
                 yeliarchitects12@gmail.com
               </a>
-              <p>+91 98765 43210</p>
+              <p>+91 85490 03331</p>
               <address className="contact-address">
                 No.1146, 1st Main Rd, Hoshalli Extension,
                 <br />
@@ -116,6 +116,6 @@ export default function HomePage() {
           </div>
         </footer>
       </section>
-    </main>
+    </main >
   )
 }
