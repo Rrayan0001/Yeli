@@ -53,23 +53,12 @@ export default function IntroAnimation({ onComplete }) {
         }
         .intro-logo-wrap {
           position: relative;
-          width: min(72vw, 520px);
-          aspect-ratio: 1 / 1;
+          width: min(94vw, 920px);
+          aspect-ratio: 3 / 2;
           display: flex;
           align-items: center;
           justify-content: center;
           animation: logoPop 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-        .intro-logo-wrap::after {
-          content: '';
-          position: absolute;
-          inset: 8%;
-          border-radius: 24px;
-          filter: blur(24px);
-          background: radial-gradient(circle, rgba(255,204,102,0.25), rgba(212,175,55,0));
-          z-index: 0;
-          opacity: 0;
-          animation: glowRise 1.8s ease-out forwards 0.2s;
         }
         .intro-logo {
           position: relative;
@@ -77,7 +66,6 @@ export default function IntroAnimation({ onComplete }) {
           width: 100%;
           height: 100%;
           object-fit: contain;
-          filter: drop-shadow(0 14px 26px rgba(0,0,0,0.55));
           opacity: 0;
           transform: scale(0.94);
           animation: logoFade 1.6s ease-out forwards 0.15s;
@@ -89,14 +77,9 @@ export default function IntroAnimation({ onComplete }) {
           100% { transform: scale(1); }
         }
         @keyframes logoFade {
-          0% { opacity: 0; transform: scale(0.94); filter: blur(6px); }
-          60% { opacity: 1; transform: scale(1.01); filter: blur(1px); }
-          100% { opacity: 1; transform: scale(1); filter: blur(0); }
-        }
-        @keyframes glowRise {
-          0% { opacity: 0; transform: scale(0.9); }
-          70% { opacity: 1; transform: scale(1.05); }
-          100% { opacity: 0.9; transform: scale(1); }
+          0% { opacity: 0; transform: scale(0.94); }
+          60% { opacity: 1; transform: scale(1.01); }
+          100% { opacity: 1; transform: scale(1); }
         }
 
         .curtain-grid {
@@ -138,7 +121,7 @@ export default function IntroAnimation({ onComplete }) {
         <div className={`intro-logo-stage ${phase === 'logo' ? 'is-active' : ''}`}>
           <div className="intro-logo-wrap">
             <img
-              src="/welcome-logo.png"
+              src="/intro-logo-transparent-v5.png"
               alt="Yeli Architecture Studio"
               className="intro-logo"
               loading="eager"

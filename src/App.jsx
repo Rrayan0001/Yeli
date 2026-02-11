@@ -148,12 +148,12 @@ export default function App() {
       <header className="site-header reveal">
         <div className={`nav-shell ${navOpen ? 'is-open' : ''}`}>
           <div className="nav-pill">
-            <a href="/" className="nav-logo" onClick={event => handleNavigate(event, '/')} aria-label="Go to home page">
+            <a href="/" className="nav-logo" aria-label="Go to home page">
               <img src="/triangle_v2.png" alt="Yeli" />
             </a>
 
             <div className="nav-title">
-              YELI ARCHITECTURE STUDIO
+              <span className="nav-title-serif">YELI ARCHITECTURE STUDIO</span>
             </div>
 
             <button

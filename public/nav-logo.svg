@@ -1,0 +1,16 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGrad" x1="14" y1="52" x2="50" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C1811C"/>
+      <stop offset=".45" stop-color="#E7C568"/>
+      <stop offset="1" stop-color="#F7DFA6"/>
+    </linearGradient>
+  </defs>
+  <path
+    d="M32 12 50 46H14L32 12Z"
+    stroke="url(#goldGrad)"
+    stroke-width="7"
+    stroke-linejoin="round"
+    fill="none"
+  />
+</svg>

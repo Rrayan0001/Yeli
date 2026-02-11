@@ -11,7 +11,8 @@ export default function HomePage() {
             <span className="gold-text">Rooted in Heritage.</span>
           </h1>
           <p className="landing-subtitle">
-            We don't just sketch structures; we blueprint aspirations.
+            We don't just sketch structures; <br />
+            we blueprint aspirations.
           </p>
           <div className="scroll-indicator">
             <span>Explore Services</span>
@@ -72,15 +73,43 @@ export default function HomePage() {
         </div>
 
         <p className="founders-paragraph">
-          Yeli Architecture Studio is <span className="highlight">Uttam Prakash</span>, <span className="highlight">Sriranga R Tilak</span>, <span className="highlight">Sudesh Ambig</span>, and <span className="highlight">Sampath Kumar</span>.
+          Yeli Architecture Studio is founded by <span className="highlight">Uttam Prakash</span>, <span className="highlight">Sriranga R Tilak</span>, <span className="highlight">Sudesh Ambig</span>, <span className="highlight">Sampath Kumar</span>, and <span className="highlight">SUPREETH SRINIVAS</span>.
         </p>
 
         <footer className="footer reveal">
-          <div className="contact-details">
-            <h3>Get in Touch</h3>
-            <p>hello@yeli.studio</p>
-            <p>+91 98765 43210</p>
-            <p>Indiranagar, Bengaluru, KA</p>
+          <div className="footer-content">
+            <div className="contact-details">
+              <h3>Get in Touch</h3>
+              <a className="contact-email-link" href="mailto:yeliarchitects12@gmail.com">
+                yeliarchitects12@gmail.com
+              </a>
+              <p>+91 98765 43210</p>
+              <address className="contact-address">
+                No.1146, 1st Main Rd, Hoshalli Extension,
+                <br />
+                Stage 1, Vijayanagar, Bengaluru,
+                <br />
+                Karnataka 560040
+              </address>
+              <a
+                className="contact-map-link"
+                href="https://www.google.com/maps/search/?api=1&query=No.1146%2C+1st+Main+Rd%2C+Hoshalli+Extension%2C+Stage+1%2C+Vijayanagar%2C+Bengaluru%2C+Karnataka+560040"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Open in Google Maps
+              </a>
+            </div>
+
+            <div className="footer-map" aria-label="Office location map">
+              <iframe
+                title="Yeli Architecture Studio Location"
+                src="https://www.google.com/maps?q=No.1146,+1st+Main+Rd,+Hoshalli+Extension,+Stage+1,+Vijayanagar,+Bengaluru,+Karnataka+560040&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen=""
+              />
+            </div>
           </div>
           <div className="footer-bottom">
             <p>&copy; 2026 Yeli Architecture Studio. All Rights Reserved.</p>
