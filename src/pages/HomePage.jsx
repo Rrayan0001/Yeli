@@ -97,14 +97,8 @@ export default function HomePage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <a
-                  className="contact-map-link"
-                  href="https://www.google.com/maps/search/?api=1&query=No.1146%2C+1st+Main+Rd%2C+Hoshalli+Extension%2C+Stage+1%2C+Vijayanagar%2C+Bengaluru%2C+Karnataka+560040"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Open in Google Maps
-                </a>
+                Open in Google Maps
+              </a>
             </div>
 
             <div className="footer-map" aria-label="Office location map">
