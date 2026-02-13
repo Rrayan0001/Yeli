@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import FloatingInstagram from './components/FloatingInstagram'
+import IntroAnimation from './components/IntroAnimation'
 
 // ... existing imports ...
 
