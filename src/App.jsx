@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import FloatingInstagram from './components/FloatingInstagram'
+
 import IntroAnimation from './components/IntroAnimation'
 
 // ... existing imports ...
@@ -192,7 +192,7 @@ export default function App() {
       </header>
 
       {renderPage()}
-      <FloatingInstagram />
+
     </div>
   )
 }

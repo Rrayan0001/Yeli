@@ -99,6 +99,16 @@ export default function HomePage() {
               >
                 Open in Google Maps
               </a>
+              <a
+                className="contact-map-link"
+                href="https://www.instagram.com/yeli.architecture.studio?igsh=MTJieWp6OHdia2NlMg=="
+                target="_blank"
+                rel="noreferrer"
+                style={{ marginLeft: '12px' }}
+                aria-label="Follow us on Instagram"
+              >
+                Instagram
+              </a>
             </div>
 
             <div className="footer-map" aria-label="Office location map">

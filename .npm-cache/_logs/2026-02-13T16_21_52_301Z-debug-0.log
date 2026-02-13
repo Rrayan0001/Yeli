@@ -7,8 +7,8 @@
 6 silly config load:file:/usr/local/etc/npmrc
 7 verbose title npm run build
 8 verbose argv "run" "build"
-9 verbose logfile logs-max:10 dir:/Users/mrrayan07/Downloads/Yeli/.npm-cache/_logs/2026-02-11T11_53_44_887Z-
-10 verbose logfile /Users/mrrayan07/Downloads/Yeli/.npm-cache/_logs/2026-02-11T11_53_44_887Z-debug-0.log
+9 verbose logfile logs-max:10 dir:/Users/mrrayan07/Downloads/Yeli/.npm-cache/_logs/2026-02-13T16_21_52_301Z-
+10 verbose logfile /Users/mrrayan07/Downloads/Yeli/.npm-cache/_logs/2026-02-13T16_21_52_301Z-debug-0.log
 11 silly logfile start cleaning logs, removing 1 files
 12 silly logfile done cleaning log files
 13 verbose cwd /Users/mrrayan07/Downloads/Yeli
