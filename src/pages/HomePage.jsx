@@ -97,18 +97,14 @@ export default function HomePage() {
                 target="_blank"
                 rel="noreferrer"
               >
-                Open in Google Maps
-              </a>
-              <a
-                className="contact-map-link"
-                href="https://www.instagram.com/yeli.architecture.studio?igsh=MTJieWp6OHdia2NlMg=="
-                target="_blank"
-                rel="noreferrer"
-                style={{ marginLeft: '12px' }}
-                aria-label="Follow us on Instagram"
-              >
-                Instagram
-              </a>
+                <a
+                  className="contact-map-link"
+                  href="https://www.google.com/maps/search/?api=1&query=No.1146%2C+1st+Main+Rd%2C+Hoshalli+Extension%2C+Stage+1%2C+Vijayanagar%2C+Bengaluru%2C+Karnataka+560040"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open in Google Maps
+                </a>
             </div>
 
             <div className="footer-map" aria-label="Office location map">

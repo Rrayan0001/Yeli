@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
-import IntroAnimation from './components/IntroAnimation'
+import FloatingInstagram from './components/FloatingInstagram'
+
+// ... existing imports ...
+
+// ... inside App component ...
+
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
 import ProjectsPage from './pages/ProjectsPage'
@@ -186,6 +191,7 @@ export default function App() {
       </header>
 
       {renderPage()}
+      <FloatingInstagram />
     </div>
   )
 }
